@@ -6,21 +6,14 @@ const SimulationWords =
    "signs", 
    "misinformation", 
    "fake news"]
-// I check for terms in this category as the input text in order to stimulate my response.
+// Checks for terms in this category as the input text in order to stimulate bot response.
 const BarthesWords = ["item1", "item2", "item3", "item4", "item5"];
-const BaudWords = ["item1", "item2", "item3", "item4", "item5"];
-// here's the list of possible things I can say.
-const theorywords = BarthesWords.concat(BaudWords);
-// concatenates two response category arrays... I hope.
-const random = Math.floor(Math.random() * theorywords.length)
-// chooses a random concatenation... I hope.
+const BaudWords = ["Baud1", "Baud2", "Baud3", "Baud4", "Baud5"];
+// these two lists define the items with which the bot can respond
 
-const bot = new Eris("[replace with key from Discord Bot]", {
-    intents: [
-        "guildMessages"
-    ]
-});
-// My token should be hidden in an .env file, but I can't figure out how to do that here. This is a security risk, were this in the wild.
+  const bot = new Eris(process.env.Discord_token);
+// calls the .env file secret, to protect the Discord token. Replace "Discord_token" with the name (key) of your token.
+
 
 bot.on("ready", () => { 
   // When the bot is ready
@@ -35,15 +28,19 @@ bot.on("error", (err) => {
 
   bot.on("messageCreate", (msg) => { 
     // When a message is created...
-    if(msg.content === "SimulationWords"){ 
-      // If the message content is ...
-        bot.createMessage(msg.channel.id, "random");
-        // Send a message in the same channel with ...
+    if(SimulationWords.includes(msg.content)){  
+      const BarthesRandomArrayLocation = Math.floor(Math.random()*(BarthesWords.length-1));
+      //Get a random location from the Barthes phrase array (-1 due to zero based index), then
+      const BaudRandomArrayLocation = Math.floor(Math.random()*(BaudWords.length-1)); 
+      //Get a random location from the Baud phrase array (-1 due to zero based index), then
+      const message = BarthesWords[BarthesRandomArrayLocation].valueOf() + " " + BaudWords[BaudRandomArrayLocation].valueOf();
+      //Concatenate the two phrases together, with a space between them.
+      bot.createMessage(msg.channel.id, message);
+      //Send the message.
     } else if(msg.content === "Bauthrillard") { 
-      // Otherwise, if the message is my name...
+      // Otherwise, if the message is the bot name...
         bot.createMessage(msg.channel.id, "Delighted to make your acquaintance, you agent of metamodernism!");
         // ...respond thusly.
-      //the else if portion runs fine. But the if portion doesn't. I can't seem to call up the array. Basically - I want the script to look for a member of the first array, and respond with a member of the second. I've tried .some and .includes but can't get the syntax correct. Fracking code.
     }
 });
 
@@ -51,3 +48,4 @@ bot.connect();
   // Get the bot to connect to Discord
 // preliminary code from https://github.com/abalabahaha/eris
 // procedure from https://www.freecodecamp.org/news/create-a-discord-bot-with-javascript-nodejs
+// Code assist by Peter Forney - https://www.linkedin.com/in/peterforney
