@@ -1,5 +1,5 @@
 # JSDiscordBot
-This JS project asks a Discord bot to respond to a keyword.
+This JS project asks a Discord bot to respond to a keyword with in string (sentence) submitted to a Discord channel by another non-bot user.
 
 
 The goal of this project was to create a network of "theory bots" which would pull phrases from philosophical theorists and put them in conversation.
